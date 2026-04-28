@@ -4,11 +4,11 @@ from io import StringIO
 
 def test_solution_3() -> None:
     try:
-        import solution_3
+        import assignment_5.solution_3 as solution_3
     except:
         raise ValueError("You did not execute your solution cell!")
     try:
-        from solution_3 import age_counter
+        from assignment_5.solution_3 import age_counter
     except:
         raise ValueError("The module does not have the necessary function!")
 

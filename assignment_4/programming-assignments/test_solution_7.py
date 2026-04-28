@@ -4,11 +4,11 @@ from unittest.mock import patch
 
 def test_solution_7() -> None:
     try:
-        import solution_7
+        import assignment_5.solution_7 as solution_7
     except:
         raise ValueError("You did not execute your solution cell!")
     try:
-        from solution_7 import validating_sum_of_squares
+        from assignment_5.solution_7 import validating_sum_of_squares
     except:
         raise ValueError("The module does not have the necessary function!")
 

@@ -1,11 +1,11 @@
 # test cell
 def test_solution_1() -> None:
     try:
-        import solution_1
+        import assignment_5.solution_1 as solution_1
     except:
         raise ValueError("You did not execute your solution cell!")
     try:
-        from solution_1 import assignment_points
+        from assignment_5.solution_1 import assignment_points
     except:
         raise ValueError("The module does not have the necessary function!")
 

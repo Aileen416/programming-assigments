@@ -1,11 +1,11 @@
 # test cell
 def test_solution_4() -> None:
     try:
-        import solution_4
+        import assignment_5.solution_4 as solution_4
     except:
         raise ValueError("You did not execute your solution cell!")
     try:
-        from solution_4 import numbers_and_bools
+        from assignment_5.solution_4 import numbers_and_bools
     except:
         raise ValueError("The module does not have the necessary function!")
 

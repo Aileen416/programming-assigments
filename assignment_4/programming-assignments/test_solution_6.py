@@ -4,11 +4,11 @@ from datetime import datetime
 
 def test_solution_6() -> None:
     try:
-        import solution_6
+        import assignment_5.solution_6 as solution_6
     except:
         raise ValueError("You did not execute your solution cell!")
     try:
-        from solution_6 import person_number_validate
+        from assignment_5.solution_6 import person_number_validate
     except:
         raise ValueError("The module does not have the necessary function!")
 
