@@ -1,14 +1,13 @@
-"""Functions for grouping words by first letter."""
+# solution cell
+from math import pi
 
-from collections import defaultdict
 
+class VolumeCalculator:
+    def __init__(self, radius: float) -> None:
+        self.radius = radius
 
-def group_by_first_letter(words):
-    """Return a dictionary grouping words by their first letter."""
-    grouped = defaultdict(list)
+    def volume(self) -> float | None:
+        if self.radius is None or self.radius <= 0:
+            return None
 
-    for word in words:
-        if word:
-            grouped[word[0]].append(word)
-
-    return dict(grouped)
+        return (4 / 3) * pi * (self.radius ** 3)

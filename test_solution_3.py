@@ -1,6 +1,7 @@
 # test cell
+import dataclasses
+from datetime import date
 from unittest.mock import patch
-import math
 
 def test_solution_3() -> None:
     try:
@@ -8,44 +9,27 @@ def test_solution_3() -> None:
     except:
         raise ValueError("You did not execute your solution cell!")
     try:
-        from solution_3 import gm_median
+        from solution_3 import PersonAge
     except:
-        raise ValueError("The module does not have the necessary function!")
+        raise ValueError("The class does not exist. Did you execute your solution cell?")
 
-    test_cases = [
-        ([], None),                       # empty list
-        ([0, -1, -2.5, "x"], None),       # all numeric <= 0
-        (["x", 0, -3, "7"], None),        # strings ignored, <=0 ignored → nothing left
+    assert dataclasses.is_dataclass(PersonAge), "The class is not a dataclass!"
+    assert any(f.name == "age" and f.init is False for f in dataclasses.fields(PersonAge))
+    
+    p = PersonAge('John Doe', 'Manager', date(1990, 11, 15))
+    assert hasattr(p, 'name'), 'Class PersonAge does not have property `name`.'
+    assert hasattr(p, 'job'), 'Class PersonAge does not have property `job`.'
+    assert hasattr(p, 'age') == False, 'Class PersonAge should not have property `age`.'
+    p.compute_age()
+    assert hasattr(p, 'age'), 'Class PersonAge does not have property `age`.'
+    assert p.age == 35, f"The computed age `{p.age}` is incorrect!"
 
-        ([2, "x", 0, 8, -3, "5"], (4.0, 5.0)),      # valid numbers [2, 8]
-        (["x", 7, 0, -1], (7.0, 7.0)),              # single valid number
-        ([0.5, "ignore", 2.0], (1.0, 1.25)),        # float handling
-    ]
+    with patch('__main__.print') as mock_print:
+        s = str(p)
+    mock_print.assert_not_called()
 
-    for _in, _out in test_cases:
-        _res = gm_median(_in)
-        
-        if _out == None:
-            assert _res is None, f"The function with input `{_in}` should return None, \
-        but returned `{_res}`."
-            continue
-
-        assert _res is not None, f"The function with input `{_in}` returned None unexpectedly."
-
-        cond1 = math.isclose(_res[0], _out[0], abs_tol=1e-1)
-        cond2 = math.isclose(_res[1], _out[1], abs_tol=1e-1)
-
-        assert cond1 and cond2, f"The function with input `{_in}` should return the value \
-    `{_out}` of type `{type(_out)}`\n but returned the value `{_res}` of type `{type(_res)}`."
-
-    with patch("solution_3.geometric_mean") as mock_gm, \
-        patch("solution_3.median") as mock_med:
-
-        mock_gm.return_value = 123.0
-        mock_med.return_value = 456.0
-        assert gm_median([1, 2, 3]) == (123.0, 456.0)
-        mock_gm.assert_called_once()
-        mock_med.assert_called_once()
-        assert (
-            mock_gm.called and mock_med.called
-        ), "Do not use `import statistics`. Import the specific functions from the module."
+    person1 = PersonAge('John Doe', 'Manager', date(1990, 11, 15))
+    person1.compute_age()
+    person2 = PersonAge('Jane Doe', 'Manager', date(1980, 11, 15))
+    person2.compute_age()
+    assert person1.age < person2.age, "The age computation seems incorrect!"

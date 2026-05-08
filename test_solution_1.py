@@ -1,39 +1,21 @@
 # test cell
-from unittest.mock import patch
-
-
 def test_solution_1() -> None:
     try:
         import solution_1
     except:
         raise ValueError("You did not execute your solution cell!")
     try:
-        from solution_1 import group_by_first_letter
+        from solution_1 import VolumeCalculator
     except:
-        raise ValueError("The module does not have the necessary function!")
+        raise ValueError("The class does not exist. \
+            Did you execute your solution cell?")
 
-    words = ["apple", "banana", "apricot", "Berry", "", "blue"]
+    assert 'volume' in dir(VolumeCalculator), 'Method volume() does not exist!'
 
-    result = group_by_first_letter(words)
-
-    expected = {
-        "a": ["apple", "apricot"],
-        "b": ["banana", "blue"],
-        "B": ["Berry"],
-    }
-
-    assert result == expected, \
-        f"Expected {expected}, but got {result}."
-
-    assert group_by_first_letter([]) == {}
-
-    with patch("solution_1.defaultdict") as mock_defaultdict:
-        mock_instance = mock_defaultdict.return_value
-        mock_instance.__getitem__.side_effect = lambda key: []
-        mock_instance.items.return_value = []
-
-        group_by_first_letter(["x"])
-
-        mock_defaultdict.assert_called_once()
-        assert mock_defaultdict.called, \
-            "Do not manually implement dictionary initialization logic. Use `defaultdict`."
+    test_cases = [(None, None), (0, None), (-1, None), (1, 4.1887902047863905), \
+        (2, 33.510321638291124)]
+    for _in, _out in test_cases:
+        _res = VolumeCalculator(_in)
+        assert _res.volume() == _out, f"The volume function with input `{_in}` should \
+            return the value `{_out}` of type `{type(_out)}`\n \
+                but returned the value `{_res}` of type `{type(_res)}`."

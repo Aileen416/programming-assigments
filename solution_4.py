@@ -1,14 +1,25 @@
-"""Functions for generating random mobile numbers."""
+# solution cell
 
-from random import Random
+from solution_2 import Person
 
 
-def random_mobile_number_generator(seed=None):
-    """Return a randomly generated mobile number as a string."""
-    rng = Random(seed)
+class Student(Person):
+    def __init__(
+        self,
+        name: str,
+        person_number: str,
+        program: str,
+        address: str | None = None
+    ) -> None:
+        super().__init__(
+            name,
+            "Student",
+            person_number,
+            address
+        )
 
-    prefix = rng.choice(["0", "46", "+46"])
-    first_digit = rng.choice(["3", "7"])
-    remaining_digits = "".join(str(rng.randint(0, 9)) for _ in range(8))
+        self.program = program
 
-    return prefix + first_digit + remaining_digits
+    def print(self) -> None:
+        result = super().__repr__() + "\t" + self.program
+        print(result)

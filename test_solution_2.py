@@ -8,28 +8,25 @@ def test_solution_2() -> None:
     except:
         raise ValueError("You did not execute your solution cell!")
     try:
-        from solution_2 import flatten_sequences
+        from solution_2 import Person
     except:
-        raise ValueError("The module does not have the necessary function!")
+        raise ValueError("The class does not exist. \
+            Did you execute your solution cell?")
 
-    assert flatten_sequences([1, 2], [3, 4]) == [1, 2, 3, 4]
-    assert flatten_sequences([], []) == []
-    assert flatten_sequences([1], []) == [1]
-    assert flatten_sequences([], [5]) == [5]
+    p = Person('John Doe', 'Manager', '201414202014')
 
-    # Ensure new list is returned (no aliasing)
-    a = [1, 2]
-    b = [3, 4]
-    result = flatten_sequences(a, b)
-    assert result is not a
-    assert result is not b
+    with patch('builtins.print') as mock_print:
+        s = str(p)
+    mock_print.assert_not_called()
 
-    with patch("solution_2.chain") as mock_chain:
-        mock_chain.return_value = [9, 8]
-
-        result = flatten_sequences([1], [2])
-        assert result == [9, 8]
-
-        mock_chain.assert_called_once()
-        assert mock_chain.called, \
-            "Do not manually concatenate lists. Use `itertools.chain`."
+    test_cases = [(('John Doe', 'Manager', '201414202014'), \
+        'John Doe\tManager\t201414202014'), \
+        (('Jane Doe', 'Supervisor', '201212202012', 'Gibraltargatan'), \
+            'Jane Doe\tSupervisor\t201212202012\tGibraltargatan'), \
+        (('Jane Doe', 'Supervisor', '201212202012', 'Gibraltargatan'), \
+        'Jane Doe\tSupervisor\t201212202012\tGibraltargatan')]
+    for _in, _out in test_cases:
+        _res = Person(*_in)
+        assert repr(_res) == _out, f"The Person class with input `{_in}` should be \
+            displayed as the value `{_out}` of type `{type(_out)}`\n \
+                but returned the value `{_res}` of type `{type(_res)}`."

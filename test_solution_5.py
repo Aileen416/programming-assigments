@@ -8,35 +8,71 @@ def test_solution_5() -> None:
     except:
         raise ValueError("You did not execute your solution cell!")
     try:
-        from solution_5 import lottery_numbers
+        from solution_5 import CourseRegister
+        from solution_4 import Student
+        from solution_2 import Person
     except:
-        raise ValueError("The module does not have the necessary function!")
+        raise ValueError("Your solution does not contain the right function!")
+        
+    assert 'CourseRegister' in dir(), 'Class CourseRegister does not exist!'
+    assert 'register' in dir(CourseRegister), \
+        'Class CourseRegister does not have method `register`'
+    assert 'remove' in dir(CourseRegister), \
+        'Class CourseRegister does not have method `remove`'
 
-    invalid_inputs = [
-        (5, 50, -1),     # lower < 0
-        (5, 0, 0),       # upper < 1
-        (0, 10, 0),      # number < 1
-        (5, 3, 0),       # not enough unique values
-        (30, -1, 0),     # upper < 1 (also negative)
-    ]
-    for _in in invalid_inputs:
-        _res = lottery_numbers(*_in)
-        assert _res is None, \
-            f"The function received the input `{_in}` and should return None, " \
-            f"but returned `{_res}`."
+    c = CourseRegister('Applied object-oriented programming', 'EEN060')
+    assert hasattr(c, 'name'), 'Class CourseRegister does not have property `name`.'
+    assert hasattr(c, 'code'), 'Class CourseRegister does not have property `code`.'
+    assert hasattr(c, 'list_registered_students'), \
+        'Class CourseRegister does not have property `list_registered_students`.'
+    assert isinstance(c.list_registered_students, list), \
+        'The attribute list_enrolled_students is not a list'
 
-    valid_inputs = [
-        (5, 50, 10),
-        (30, 100, 0),
-        (2, 1, 0),       # edge case: population size == number
-    ]
-    for _in in valid_inputs:
-        _res = lottery_numbers(*_in)
-        assert _res is not None, f"The function returned None for valid input `{_in}`."
-        assert len(_res) == _in[0], f"Wrong length for input `{_in}`. Output: `{_res}`."
-        assert len(_res) == len(set(_res)), \
-            f"Repeated elements for input `{_in}`. Output: `{_res}`."
-        assert min(_res) >= _in[2], \
-            f"Element below lower bound for input `{_in}`. Output: `{_res}`."
-        assert max(_res) <= _in[1], \
-            f"Element above upper bound for input `{_in}`. Output: `{_res}`."
+    s1 = Student('John Doe', '201414202014', 'TIDSL')
+    c.register(s1)
+    assert len(c.list_registered_students) == 1
+
+    p1 = Person('John Doe', '201414202014', 'Manager')
+    c.register(p1)
+    assert len(c.list_registered_students) == 1
+
+    s2 = Student('Jane Doe', '201212202012', 'TKDES', 'Gibraltargatan')
+    c.register(s2)
+    assert len(c.list_registered_students) == 2
+
+    c.remove(s1)
+    assert len(c.list_registered_students) == 1
+
+    c.remove(s1)
+    assert len(c.list_registered_students) == 1
+
+    c.remove(p1)
+    assert len(c.list_registered_students) == 1
+
+    c.register(s2)
+    assert len(c.list_registered_students) == 1
+
+    c = CourseRegister('Applied object-oriented programming', 'EEN060')
+    assert isinstance(c.list_registered_students, list), \
+        'The attribute list_enrolled_students is not a list'
+
+    s1 = Student('John Doe', '201414202014_d', 'TIDSL')
+    c.register(s1)
+    assert len(c.list_registered_students) == 1
+
+    p1 = Person('John Doe', '201414202014_d', 'Manager')
+    c.register(p1)
+    assert len(c.list_registered_students) == 1
+
+    s2 = Student('Jane Doe', '201212202012_d', 'TKDES', 'Gibraltargatan')
+    c.register(s2)
+    assert len(c.list_registered_students) == 2
+
+    c.remove(s1)
+    assert len(c.list_registered_students) == 1
+
+    c.remove(s1)
+    assert len(c.list_registered_students) == 1
+
+    c.remove(p1)
+    assert len(c.list_registered_students) == 1

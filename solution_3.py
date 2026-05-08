@@ -1,19 +1,26 @@
-"""Functions for geometric mean and median."""
+# solution cell
 
-from statistics import geometric_mean, median
+import datetime
+from dataclasses import dataclass, field
 
 
-def gm_median(values):
-    """Return (geometric_mean, median) of valid numeric values or None."""
-    if not values:
-        return None
+@dataclass
+class PersonAge:
+    name: str
+    job: str
+    birthdate: datetime.date
+    age: int = field(init=False)
 
-    filtered = [
-        v for v in values
-        if isinstance(v, (int, float)) and v > 0
-    ]
+    def compute_age(self) -> int:
+        today = datetime.date.today()
 
-    if not filtered:
-        return None
+        self.age = (
+            today.year
+            - self.birthdate.year
+            - (
+                (today.month, today.day)
+                < (self.birthdate.month, self.birthdate.day)
+            )
+        )
 
-    return (geometric_mean(filtered), median(filtered))
+        return self.age

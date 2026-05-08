@@ -1,16 +1,25 @@
-"""Functions for generating lottery numbers."""
+# solution cell
 
-from random import sample
+from dataclasses import dataclass, field
+
+from solution_4 import Student
 
 
-def lottery_numbers(number, upper, lower):
-    """Return a list of unique random integers or None if invalid input."""
-    if (
-        lower < 0
-        or upper < 1
-        or number < 1
-        or (upper - lower) < (number - 1)
-    ):
-        return None
+@dataclass
+class CourseRegister:
+    name: str
+    code: str
+    list_registered_students: list[Student] = field(
+        default_factory=list
+    )
 
-    return sample(range(lower, upper + 1), number)
+    def register(self, student: Student) -> None:
+        if (
+            isinstance(student, Student)
+            and student not in self.list_registered_students
+        ):
+            self.list_registered_students.append(student)
+
+    def remove(self, student: Student) -> None:
+        if student in self.list_registered_students:
+            self.list_registered_students.remove(student)
